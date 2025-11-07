@@ -4,13 +4,13 @@
   "description": "AI-powered meme creator using Groq API",
   "homepage": ".",
   "main": "index.js",
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "dependencies": {
+ "scripts": {
+  "start": "serve -s build",
+  "build": "react-scripts build",
+  "test": "react-scripts test",
+  "eject": "react-scripts eject"
+},
+"dependencies": {
     "lucide-react": "^0.263.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
