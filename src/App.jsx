@@ -13,7 +13,7 @@ function App() {
   const [bottomText, setBottomText] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
-  const [tone, setTone] = useState('relatable'); // 🆕 added tone state
+  const [tone, setTone] = useState('relatable'); // 🆕 tone state
 
   const handleImageUpload = (file, preview) => {
     setImage(file);
@@ -28,7 +28,7 @@ function App() {
     setIsGenerating(true);
 
     try {
-      // 🆕 pass tone to your service function
+      // 🆕 pass tone to service
       const generatedSuggestions = await generateMemeTextFromAPI(image, tone);
       setSuggestions(generatedSuggestions);
       setTopText(generatedSuggestions[0].top);
@@ -61,7 +61,7 @@ function App() {
           <div className="space-y-6">
             <ImageUploader onImageUpload={handleImageUpload} />
 
-            {/* 🆕 Tone Selector */}
+            {/* 🎭 Humor Tone Selector */}
             <div className="bg-white/10 p-4 rounded-xl backdrop-blur-sm text-white">
               <label className="block mb-2 font-semibold">🎭 Select Humor Tone:</label>
               <select
@@ -73,6 +73,7 @@ function App() {
                 <option value="sarcastic">Sarcastic</option>
                 <option value="wholesome">Wholesome</option>
                 <option value="chaotic">Chaotic</option>
+                <option value="dark humor">Dark Humor</option> {/* 🆕 added */}
               </select>
             </div>
 
@@ -128,7 +129,8 @@ function App() {
         <div className="mt-8 bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-white">
           <h3 className="font-bold text-lg mb-2">🔧 About:</h3>
           <p className="text-sm leading-relaxed">
-            This app uses Groq's AI API with vision capabilities to analyze your images and suggest funny meme captions based on popular culture references.
+            This app uses Groq's AI API with vision capabilities to analyze your images and
+            suggest funny meme captions based on popular culture references and selected humor tone.
           </p>
         </div>
       </div>

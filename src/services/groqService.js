@@ -1,7 +1,12 @@
 import { GROQ_API_KEY, GROQ_API_URL, DEFAULT_MODEL, getAIPrompt, FALLBACK_SUGGESTIONS } from '../utils/constants';
 import { convertImageToBase64 } from '../utils/memeGenerator';
 
-export const generateMemeTextFromAPI = async (imageFile) => {
+/**
+ * Generates meme text from API based on selected category.
+ * @param {File} imageFile - Uploaded image file
+ * @param {string} category - Meme category (e.g. 'relatable', 'dark_humor')
+ */
+export const generateMemeTextFromAPI = async (imageFile, category = "relatable") => {
   try {
     const base64Image = await convertImageToBase64(imageFile);
 
@@ -23,7 +28,8 @@ export const generateMemeTextFromAPI = async (imageFile) => {
               },
               {
                 type: 'text',
-                text: getAIPrompt("relatable") // 👈 dynamically generates the prompt
+                // 👇 dynamically use category — can be 'relatable' or 'dark_humor'
+                text: getAIPrompt(category)
               }
             ]
           }
