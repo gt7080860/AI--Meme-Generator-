@@ -6,29 +6,35 @@ import SuggestionsList from './components/SuggestionsList';
 import { generateMemeTextFromAPI } from './services/groqService';
 import { Wand2, Loader2 } from 'lucide-react';
 
+// 🖼️ Use meme-collage as the default/fallback background image
+import memeCollage from './assets/meme-collage.jpg';
+
 function App() {
   const [image, setImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
+  const [imagePreview, setImagePreview] = useState(memeCollage); // fallback image
   const [topText, setTopText] = useState('');
   const [bottomText, setBottomText] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
-  const [tone, setTone] = useState('relatable'); // 🆕 tone state
+  const [tone, setTone] = useState('relatable'); // 🎭 tone state
 
   const handleImageUpload = (file, preview) => {
     setImage(file);
-    setImagePreview(preview);
+    setImagePreview(preview || memeCollage);
     setSuggestions([]);
     setTopText('');
     setBottomText('');
   };
 
   const generateMemeText = async () => {
-    if (!image) return;
+    if (!image) {
+      alert('Please upload an image before generating meme text!');
+      return;
+    }
+
     setIsGenerating(true);
 
     try {
-      // 🆕 pass tone to service
       const generatedSuggestions = await generateMemeTextFromAPI(image, tone);
       setSuggestions(generatedSuggestions);
       setTopText(generatedSuggestions[0].top);
@@ -47,8 +53,13 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 p-8">
-      <div className="max-w-6xl mx-auto">
+    <div
+      className="min-h-screen bg-cover bg-center bg-fixed p-8"
+      style={{
+        backgroundImage: `url(${memeCollage})`,
+      }}
+    >
+      <div className="max-w-6xl mx-auto bg-black/50 backdrop-blur-sm rounded-2xl p-6 md:p-10 shadow-lg">
         <h1 className="text-4xl font-bold text-white text-center mb-2">
           🎬 AI Meme Creator
         </h1>
@@ -56,7 +67,7 @@ function App() {
           Upload a movie scene and let AI suggest the perfect meme text!
         </p>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-8 mt-4 md:mt-8">
           {/* Left Column */}
           <div className="space-y-6">
             <ImageUploader onImageUpload={handleImageUpload} />
@@ -67,13 +78,13 @@ function App() {
               <select
                 value={tone}
                 onChange={(e) => setTone(e.target.value)}
-                className="w-full bg-white/20 text-white p-2 rounded-md focus:outline-none"
+                className="w-full bg-white/20 text-white font-medium p-2 rounded-md hover:bg-white/30 transition focus:outline-none"
               >
                 <option value="relatable">Relatable</option>
                 <option value="sarcastic">Sarcastic</option>
                 <option value="wholesome">Wholesome</option>
                 <option value="chaotic">Chaotic</option>
-                <option value="dark humor">Dark Humor</option> {/* 🆕 added */}
+                <option value="dark humor">Dark Humor</option>
               </select>
             </div>
 
