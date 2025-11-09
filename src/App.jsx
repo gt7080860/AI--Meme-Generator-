@@ -6,6 +6,7 @@ import TextEditor from './components/TextEditor';
 import SuggestionsList from './components/SuggestionsList';
 import { generateMemeTextFromAPI } from './services/groqService';
 import { Wand2, Loader2 } from 'lucide-react';
+import bgImage from './assets/meme-collage.jpg'; // ✅ Import background image
 
 function App() {
   const [image, setImage] = useState(null);
@@ -14,7 +15,7 @@ function App() {
   const [bottomText, setBottomText] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
-  const [tone, setTone] = useState('relatable'); // 🆕 tone state
+  const [tone, setTone] = useState('relatable');
 
   const handleImageUpload = (file, preview) => {
     setImage(file);
@@ -27,9 +28,7 @@ function App() {
   const generateMemeText = async () => {
     if (!image) return;
     setIsGenerating(true);
-
     try {
-      // 🆕 pass tone to service
       const generatedSuggestions = await generateMemeTextFromAPI(image, tone);
       setSuggestions(generatedSuggestions);
       setTopText(generatedSuggestions[0].top);
@@ -48,8 +47,20 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 p-8">
-      <div className="max-w-6xl mx-auto">
+    <div
+      className="min-h-screen p-8 relative"
+      style={{
+        backgroundImage: `url(${bgImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed',
+      }}
+    >
+      {/* Overlay for better readability */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-700/80 via-pink-600/80 to-orange-500/80 backdrop-blur-sm z-0"></div>
+
+      {/* Main Content */}
+      <div className="max-w-6xl mx-auto relative z-10">
         <h1 className="text-4xl font-bold text-white text-center mb-2">
           🎬 AI Meme Creator
         </h1>
@@ -62,7 +73,6 @@ function App() {
           <div className="space-y-6">
             <ImageUploader onImageUpload={handleImageUpload} />
 
-            {/* 🎭 Humor Tone Selector */}
             <div className="bg-white/10 p-4 rounded-xl backdrop-blur-sm text-white">
               <label className="block mb-2 font-semibold">🎭 Select Humor Tone:</label>
               <select
@@ -74,16 +84,12 @@ function App() {
                 <option value="sarcastic">Sarcastic</option>
                 <option value="wholesome">Wholesome</option>
                 <option value="chaotic">Chaotic</option>
-                <option value="dark humor">Dark Humor</option> {/* 🆕 added */}
+                <option value="dark humor">Dark Humor</option>
               </select>
             </div>
 
             {imagePreview && (
-              <MemePreview
-                imagePreview={imagePreview}
-                topText={topText}
-                bottomText={bottomText}
-              />
+              <MemePreview imagePreview={imagePreview} topText={topText} bottomText={bottomText} />
             )}
 
             {imagePreview && (
