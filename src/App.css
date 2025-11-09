@@ -1,3 +1,4 @@
+is this the code 
 * {
   margin: 0;
   padding: 0;
@@ -10,12 +11,6 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  /* 🔥 New background */
-  background: url('/meme-collage.jpg') no-repeat center center fixed;
-  background-size: cover;
-  background-attachment: fixed;
-  background-color: #000; /* fallback if image doesn’t load */
 }
 
 code {
